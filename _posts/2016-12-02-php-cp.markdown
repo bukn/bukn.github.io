@@ -1,0 +1,32 @@
+---
+layout: post
+title:  "php-cp"
+date:   2016-12-02 20:22:44 +0800
+categories: diary
+---
+
+今天开始正式涉及 php-cp 相关的工作，计划为该项目贡献一个mongo wrapper 。
+
+一些关键点：
+
+* 通过 `ini_get` 来查一些常用的环境变量值，如 `extension_dir`
+* `php -m` 可用来查询已经加载的模块
+* 可以通过 `dl("ext.so")` 来查看模块加载的情况（报错提示很有帮助）
+* 关注`phpinfo()`输出结果，其中的Configuration File 会告诉你哪个php.ini 被加载。如果用自编译的php代替系统包管理的安装结果，那么命令行版的php.ini很可能是不加载的，不应该被之前留下的 /etc/php/... 所骗，事实的情况可能如下：
+
+<pre>
+	Configuration File (php.ini) Path => /usr/local/lib
+	Loaded Configuration File => (none)
+</pre>
+
+* php.ini 文件，在源代码包中有默认版本，即根目录下的 php.ini-develepment 和 php.ini-production ，它在 make install 时将复制到何处，取决于configure 选项
+
+--with-config-file-scan-dir=PATH
+
+--with-config-file-path=PATH
+
+* `ini_get` 得到的 `extension_dir` 并不代表运行时php真正会去搜索extension的路径，还是要看phpinfo 的结果
+* 默认的扩展搜索路径，似乎无法在configure 时指定，但它会拥有一个默认值，并写进Makefile ，保存在`EXTENSION_DIR` 这个变量中，这个默认值很奇怪，形如`/usr/local/lib/php/extensions/no-debug-non-zts-20151012` 我并没去研究它是怎么生成的，但最后的数字和php 内部的api版本有关
+* phpize 的默认安装路径也与那个版本号有关，但它安装时为何不把上面所说这个路径读出，并默认装向那个路径呢？这真是个需要修改的地方，或许我会给它提个pr ，它违反了最小惊奇原则，官方提供的同一系工具，对同一个路径却有着不同的默认值
+
+这些TIPS 应该能够帮助编译php 和php 模块的人少走一些弯路。先到这里。
