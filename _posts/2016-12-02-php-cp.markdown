@@ -21,9 +21,9 @@ categories: diary
 
 * php.ini 文件，在源代码包中有默认版本，即根目录下的 php.ini-develepment 和 php.ini-production ，它在 make install 时将复制到何处，取决于configure 选项
 
---with-config-file-scan-dir=PATH
+`--with-config-file-scan-dir=PATH`
 
---with-config-file-path=PATH
+`--with-config-file-path=PATH`
 
 * `ini_get` 得到的 `extension_dir` 并不代表运行时php真正会去搜索extension的路径，还是要看phpinfo 的结果
 * 默认的扩展搜索路径，似乎无法在configure 时指定，但它会拥有一个默认值，并写进Makefile ，保存在`EXTENSION_DIR` 这个变量中，这个默认值很奇怪，形如`/usr/local/lib/php/extensions/no-debug-non-zts-20151012` 我并没去研究它是怎么生成的，但最后的数字和php 内部的api版本有关
