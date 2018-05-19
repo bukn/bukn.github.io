@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $1x == 'x' ]
+then
+        echo '请输入日记名: '
+        read diary_name
+else
+        diary_name=$1
+fi
+filename=`date +%F`-$diary_name.markdown
+echo $filename
+touch $filename
+vim $filename -c "Diary"
