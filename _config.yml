@@ -28,7 +28,7 @@ github_username:  bukn
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-minimal
+theme: jekyll-theme-cayman
 gems:
   - jekyll-feed
 exclude:
